@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.analog_alarm_clock">
 
-    <uses-permission android:name="android.Permission.RECIEVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.Permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECIEVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
    <application
         android:label="analog_alarm_clock"

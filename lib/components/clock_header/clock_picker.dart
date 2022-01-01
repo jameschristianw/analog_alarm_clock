@@ -1,8 +1,4 @@
-import 'dart:math';
-
-import 'package:analog_alarm_clock/models/alarms_model_provider.dart';
 import 'package:analog_alarm_clock/models/main_provider.dart';
-import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
@@ -52,25 +48,13 @@ class ClockPicker extends StatelessWidget {
             ),
           ],
         ),
-        Consumer<MainProvider>(
-          builder: (context, provider, child) => ElevatedButton(
-            onPressed: () {
-              // AndroidAlarmManager.oneShotAt(
-              //   DateTime(
-              //     DateTime.now().year,
-              //     DateTime.now().month,
-              //     DateTime.now().day + 1,
-              //   ),
-              //   1,
-              //   () {},
-              // );
-              print('current id = ${provider.currentId}');
-              clock.addAlarms(provider.currentId);
-              provider.setCurrentId(provider.currentId + 1);
-            },
-            child: const Text('Save Alarm'),
-          ),
-        )
+        ElevatedButton(
+          onPressed: () {
+            clock.addAlarms(clock.currentId);
+            clock.setCurrentId(clock.currentId + 1);
+          },
+          child: const Text('Save Alarm'),
+        ),
       ],
     );
   }

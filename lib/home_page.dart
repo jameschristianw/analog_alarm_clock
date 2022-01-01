@@ -1,4 +1,5 @@
 import 'package:analog_alarm_clock/components/alarm_list/alarm_list.dart';
+import 'package:analog_alarm_clock/models/clock_model_provider.dart';
 import 'package:analog_alarm_clock/models/main_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,9 +33,17 @@ class _HomeState extends State<Home> {
   void _initializeData(context) async {
     _prefs = await SharedPreferences.getInstance();
     int currentId = _prefs.getInt('CURRENT_ID') ?? 0;
+    String alarms = _prefs.getString('ALARMS') ?? '';
 
-    MainProvider provider = Provider.of<MainProvider>(context, listen: false);
-    provider.setCurrentId(currentId);
+    ClockModel clock = Provider.of<ClockModel>(context, listen: false);
+    clock.setCurrentId(currentId);
+
+    // MainProvider provider = Provider.of<MainProvider>(context, listen: false);
+    // provider.setCurrentId(currentId);
+
+    if (alarms.isNotEmpty) {
+      clock.setAlarmFromJson(alarms);
+    }
   }
 
   @override
@@ -42,6 +51,25 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Analog Alarm App'),
+        actions: [
+          Consumer<ClockModel>(
+            builder: (context, clock, child) => TextButton(
+              onPressed: () async {
+                clock.resetAlarms();
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Alarms has been reset'),
+                  ),
+                );
+              },
+              child: const Text(
+                'Reset Alarms',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          )
+        ],
       ),
       body: Container(
         color: Colors.grey.shade100,

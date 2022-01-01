@@ -24,12 +24,18 @@ class _AlarmListState extends State<AlarmList> {
             padding: EdgeInsets.all(4.0),
             child: Text('Alarm List'),
           ),
-          ...clock.alarms.map(
-            (alarm) => AlarmItem(
-              alarm: alarm,
-              onSwitch: (id) => clock.switchAlarm(id),
+          if (clock.alarms.isNotEmpty)
+            ...clock.alarms.map(
+              (alarm) => AlarmItem(
+                alarm: alarm,
+                onSwitch: (id) => clock.switchAlarm(id),
+              ),
             ),
-          )
+          if (clock.alarms.isEmpty)
+            const Padding(
+              padding: EdgeInsets.only(top: 16.0),
+              child: Center(child: Text('No Alarm Data')),
+            )
         ],
       ),
     );

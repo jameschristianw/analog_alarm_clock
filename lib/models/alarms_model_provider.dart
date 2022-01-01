@@ -37,4 +37,11 @@ class AlarmsModel with ChangeNotifier {
     _isEnabled = !_isEnabled;
     // notifyListeners();
   }
+
+  Map toJson() => {
+        'id': _id,
+        'hour': _hour,
+        'minute': _minute,
+        'isEnabled': _isEnabled,
+      };
 }

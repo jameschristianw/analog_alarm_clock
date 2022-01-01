@@ -10,11 +10,4 @@ class MainProvider with ChangeNotifier {
     _isClockLeft = !_isClockLeft;
     notifyListeners();
   }
-
-  // Alarms
-  late int _currentId;
-  get currentId => _currentId;
-  void setCurrentId(id) {
-    _currentId = id;
-  }
 }
