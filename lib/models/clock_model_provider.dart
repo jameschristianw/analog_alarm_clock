@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:analog_alarm_clock/models/alarms_model_provider.dart';
-import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../helper/alarm.dart';
 
 class ClockModel with ChangeNotifier {
   ClockModel(id, hour, minute) {
@@ -43,7 +44,8 @@ class ClockModel with ChangeNotifier {
 
   final List<AlarmsModel> _alarms = [];
   List<AlarmsModel> get alarms => _alarms;
-  void addAlarms(id) async {
+  void addAlarms(context, id) async {
+    print('alarm id: $id');
     AlarmsModel newAlarm = AlarmsModel(
       id: id,
       hour: _hour,
@@ -51,28 +53,13 @@ class ClockModel with ChangeNotifier {
       isEnabled: true,
     );
     _alarms.add(newAlarm);
-    runAlarm(id);
+    AlarmHelper.runAlarm(context, _hour, _minute, id);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('CURRENT_ID', id);
     prefs.setString('ALARMS', jsonEncode(_alarms));
 
     notifyListeners();
-  }
-
-  runAlarm(id) async {
-    print('runAlarm');
-    await AndroidAlarmManager.oneShotAt(
-      DateTime(
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-        _hour,
-        _minute,
-      ),
-      id,
-      printTest,
-    );
   }
 
   void switchAlarm(id) {
@@ -102,12 +89,12 @@ class ClockModel with ChangeNotifier {
     prefs.setString('ALARMS', '');
     prefs.setInt('CURRENT_ID', 0);
 
+    for (var a in _alarms) {
+      AlarmHelper.cancelAlarm(a.id);
+    }
+
     _currentId = 0;
     _alarms.clear();
     notifyListeners();
   }
-}
-
-printTest() {
-  print('Alarm is triggered');
 }

@@ -1,13 +1,17 @@
-import 'package:analog_alarm_clock/models/main_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/clock_model_provider.dart';
 
-class ClockPicker extends StatelessWidget {
+class ClockPicker extends StatefulWidget {
   const ClockPicker({Key? key}) : super(key: key);
 
+  @override
+  State<ClockPicker> createState() => _ClockPickerState();
+}
+
+class _ClockPickerState extends State<ClockPicker> {
   @override
   Widget build(BuildContext context) {
     ClockModel clock = Provider.of<ClockModel>(context);
@@ -50,7 +54,7 @@ class ClockPicker extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            clock.addAlarms(clock.currentId);
+            clock.addAlarms(context, clock.currentId + 1);
             clock.setCurrentId(clock.currentId + 1);
           },
           child: const Text('Save Alarm'),

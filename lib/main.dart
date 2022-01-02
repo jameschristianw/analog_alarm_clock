@@ -1,26 +1,51 @@
 import 'package:analog_alarm_clock/models/alarms_model_provider.dart';
+import 'package:analog_alarm_clock/pages/alarm_open.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
-import 'home_page.dart';
+import 'pages/home_page.dart';
 import 'models/clock_model_provider.dart';
 
-import 'package:android_alarm_manager/android_alarm_manager.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 import 'models/main_provider.dart';
 
+import '../helper/notification.dart' as notification;
+
 void main() async {
   runApp(const MyApp());
-
   await AndroidAlarmManager.initialize();
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final GlobalKey<NavigatorState> _key = GlobalKey<NavigatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    notification.initNotifications(_key);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // notification.initNotifications(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _key,
       title: 'Analog Alarm App',
       themeMode: ThemeMode.light,
       home: MultiProvider(

@@ -1,7 +1,8 @@
 import 'package:analog_alarm_clock/models/alarms_model_provider.dart';
-import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../../helper/alarm.dart';
 
 class AlarmItem extends StatelessWidget {
   final AlarmsModel alarm;
@@ -32,24 +33,17 @@ class AlarmItem extends StatelessWidget {
               onChanged: (newValue) {
                 onSwitch(alarm.id);
                 if (newValue) {
-                  AndroidAlarmManager.oneShotAt(
-                    DateTime(
-                      DateTime.now().year,
-                      DateTime.now().month,
-                      DateTime.now().day,
-                      alarm.hour,
-                      alarm.minute,
-                      0,
-                    ),
+                  AlarmHelper.runAlarm(
+                    context,
+                    alarm.hour,
+                    alarm.minute,
                     alarm.id,
-                    printTest,
                   );
                 } else {
-                  AndroidAlarmManager.cancel(alarm.id);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Alarm for $time is disabled'),
-                    ),
+                  AlarmHelper.cancelAlarm(
+                    alarm.id,
+                    time: time,
+                    context: context,
                   );
                 }
               },
@@ -59,8 +53,4 @@ class AlarmItem extends StatelessWidget {
       ),
     );
   }
-}
-
-printTest() {
-  print('Alarm is triggered asdasd');
 }

@@ -1,12 +1,11 @@
 import 'package:analog_alarm_clock/components/alarm_list/alarm_list.dart';
 import 'package:analog_alarm_clock/models/clock_model_provider.dart';
-import 'package:analog_alarm_clock/models/main_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'components/clock_header/clock_header.dart';
-import 'components/clock_header/clock_location.dart';
+import '../components/clock_header/clock_header.dart';
+import '../components/clock_header/clock_location.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -46,8 +45,18 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // void startServiceInPlatform() async {
+  //   if (Platform.isAndroid) {
+  //     var methodChannel = MethodChannel('com.example');
+  //     String data = await methodChannel.invokeMethod('startService');
+  //     debugPrint(data);
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
+    // startServiceInPlatform();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Analog Alarm App'),
