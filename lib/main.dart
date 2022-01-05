@@ -1,7 +1,4 @@
-import 'package:analog_alarm_clock/models/alarms_model_provider.dart';
-import 'package:analog_alarm_clock/pages/alarm_open.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/home_page.dart';
@@ -14,8 +11,9 @@ import 'models/main_provider.dart';
 import '../helper/notification.dart' as notification;
 
 void main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
   await AndroidAlarmManager.initialize();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -58,7 +56,6 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
           ChangeNotifierProvider(create: (context) => MainProvider()),
-          ChangeNotifierProvider(create: (context) => AlarmsModel())
         ],
         child: const Home(),
       ),

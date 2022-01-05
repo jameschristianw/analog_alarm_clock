@@ -4,21 +4,21 @@ import './notification.dart' as notification;
 
 class AlarmHelper {
   static runAlarm(context, hour, minute, id, {time}) async {
-    // await AndroidAlarmManager.oneShotAt(
-    //   DateTime(
-    //     DateTime.now().year,
-    //     DateTime.now().month,
-    //     DateTime.now().day,
-    //     hour,
-    //     minute,
-    //     0,
-    //   ),
-    //   id,
-    //   showAlarm,
-    //   alarmClock: true,
-    // );
+    await AndroidAlarmManager.oneShotAt(
+      DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        hour,
+        minute,
+        0,
+      ),
+      id,
+      showAlarm,
+      alarmClock: true,
+    );
 
-    AndroidAlarmManager.periodic(const Duration(seconds: 5), id, showAlarm());
+    // AndroidAlarmManager.periodic(const Duration(seconds: 5), id, showAlarm());
     if (time != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -47,7 +47,8 @@ class AlarmHelper {
     }
   }
 
-  static showAlarm() async {
+  static void showAlarm(alarmId) async {
+    print('showAlarm function: $alarmId');
     // AudioPlayer player = AudioPlayer();
 
     // int result = await player.play(
@@ -71,6 +72,6 @@ class AlarmHelper {
     //   asAlarm: true, // Android only - all APIs
     // );
 
-    notification.sendNotification();
+    notification.sendNotification(alarmId);
   }
 }

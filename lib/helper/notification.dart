@@ -1,6 +1,8 @@
+import 'package:analog_alarm_clock/models/clock_model_provider.dart';
 import 'package:analog_alarm_clock/pages/alarm_open.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -20,24 +22,29 @@ void initNotifications(GlobalKey<NavigatorState> key) async {
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
     onSelectNotification: (value) => selectNotification(
-      value ?? "Something went wrong with notif",
+      value ?? "-----",
       key,
     ),
   );
 }
 
 void selectNotification(String payload, GlobalKey<NavigatorState> key) async {
-  // if (payload != null) {
   debugPrint('notification payload: $payload');
-  // FlutterRingtonePlayer.stop();
-  // }
   await key.currentState!.push(
-    MaterialPageRoute<void>(builder: (context) => AlarmOpen(payload)),
+    MaterialPageRoute<void>(
+      builder: (context) => ChangeNotifierProvider(
+        create: (context) => ClockModel(
+          0,
+          DateTime.now().hour,
+          DateTime.now().minute,
+        ),
+        child: AlarmOpen(payload),
+      ),
+    ),
   );
 }
 
-void sendNotification() {
-  // AssetsAudioPlayer.playAndForget(Audio("assets/audios/notification.mp3"));
+void sendNotification(alarmId) {
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
       AndroidNotificationDetails(
     'ANALOG_ALARM_CLOCK',
@@ -52,9 +59,10 @@ void sendNotification() {
   const NotificationDetails platformChannelSpecifics =
       NotificationDetails(android: androidPlatformChannelSpecifics);
   flutterLocalNotificationsPlugin.show(
-    0,
-    'Alarm Title',
-    'Alarm Body',
+    alarmId,
+    'Analog Alarm App',
+    'Your alarm at ${DateTime.now().hour}:${DateTime.now().minute} is up!',
     platformChannelSpecifics,
+    payload: alarmId.toString(),
   );
 }

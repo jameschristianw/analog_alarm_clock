@@ -2,7 +2,6 @@ import 'package:analog_alarm_clock/components/alarm_list/alarm_list.dart';
 import 'package:analog_alarm_clock/models/clock_model_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/clock_header/clock_header.dart';
 import '../components/clock_header/clock_location.dart';
@@ -15,8 +14,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late SharedPreferences _prefs;
-
   @override
   void initState() {
     super.initState();
@@ -30,19 +27,8 @@ class _HomeState extends State<Home> {
   }
 
   void _initializeData(context) async {
-    _prefs = await SharedPreferences.getInstance();
-    int currentId = _prefs.getInt('CURRENT_ID') ?? 0;
-    String alarms = _prefs.getString('ALARMS') ?? '';
-
     ClockModel clock = Provider.of<ClockModel>(context, listen: false);
-    clock.setCurrentId(currentId);
-
-    // MainProvider provider = Provider.of<MainProvider>(context, listen: false);
-    // provider.setCurrentId(currentId);
-
-    if (alarms.isNotEmpty) {
-      clock.setAlarmFromJson(alarms);
-    }
+    clock.setAlarmFromJson();
   }
 
   // void startServiceInPlatform() async {

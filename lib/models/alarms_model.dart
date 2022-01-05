@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
 
 class AlarmsModel with ChangeNotifier {
-  late int _id, _hour, _minute;
+  late int _id, _year, _month, _day, _hour, _minute;
   late bool _isEnabled;
 
   AlarmsModel({
-    id = 0,
-    hour = 0,
-    minute = 0,
-    isEnabled = 0,
+    required id,
+    required year,
+    required month,
+    required day,
+    required hour,
+    required minute,
+    required isEnabled,
   }) {
     _id = id;
+    _year = year;
+    _month = month;
+    _day = day;
     _hour = hour;
     _minute = minute;
     _isEnabled = isEnabled;
   }
 
   get id => _id;
+  get year => _year;
+  get month => _month;
+  get day => _day;
   get hour => _hour;
   get minute => _minute;
   get isEnabled => _isEnabled;
@@ -40,6 +49,9 @@ class AlarmsModel with ChangeNotifier {
 
   Map toJson() => {
         'id': _id,
+        'year': _year,
+        'month': _month,
+        'day': _day,
         'hour': _hour,
         'minute': _minute,
         'isEnabled': _isEnabled,
